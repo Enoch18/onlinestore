@@ -5,19 +5,46 @@
 
     $response = '';
 
+    /*
+    Cheching if the condition is true for the value of posting submit.
+    If it is true, the productscontroller class is instantiated then the method 
+    of storing the data is called.
+    */
     if(isset($_POST['submit'])){
         $products = new ProductsController();
         $response = $products->store();
     }
 
+    /*
+    Cheching if the condition is true for the value of posting delete.
+    If it is true, the productscontroller class is instantiated then the method 
+    of deleting is called.
+    */
     if(isset($_POST['delete'])){
         $products = new ProductsController();
         $response = $products->destroy();
     }
 
+    /*
+    Cheching if the condition is true for the value of posting edit.
+    If it is true, the productscontroller class is instantiated then the method 
+    of updating is called.
+    */
+    if(isset($_POST['edit'])){
+        $products = new ProductsController();
+        $response = $products->update();
+    }
+
+    // instantiating the productscontroller class and calling the index method which displays all the products.
     $products = new ProductsController();
     $all_products = json_decode($products->index());
 
+    /*
+        Checking if the response from the methods is an array or a string
+        if it is an array that means it has responded with some errors and 
+        those errors and displayed. If it is a string it means that there were no 
+        errors.
+    */
     if(is_array($response)){
         $response = $response;
     }
@@ -34,12 +61,14 @@
     <div class="card">
         <?php 
             if (!is_array($response)){
+                // Displaying the response that has not errors
                 if ($response != ''){
                     echo "
                         <div class='alert alert-success' id='response'>$response</div>
                     ";
                 }
             }else{
+                // Displaying the response that has errors from the array.
                 echo "<div class='alert alert-danger' id='response'>";
                 echo "<ul>";
                 $name_error = $response[0];
@@ -63,7 +92,8 @@
         <h4 class="h4">Products</h4><br />
 
         <button class="btn btn-success" id="myBtn">Add Product</button>
-
+        
+        <!-- Table div and actual table for displaying all the products -->
         <div class="table-responsive">
             <table class="table table-bordered table-sm">
                 <thead>
@@ -85,7 +115,7 @@
                                 <img src="<?php echo $product->thumbnail ?>" style="width: 40px;" />
                             </td>
                             <td>
-                                <button class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-success" onclick="editProduct(<?php echo $product->id; ?>, '<?php echo $product->name; ?>', '<?php echo $product->description; ?>', '<?php echo $product->thumbnail; ?>', <?php echo $product->price; ?>)"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-danger" onclick="deleteModal(<?php echo $product->id; ?>)"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
@@ -93,6 +123,7 @@
                 </tbody>
             </table>
         </div>
+        <!-- End of Table div and actual table for displaying all the products -->
     </div>
 
     <!-- The Modal for adding products -->
@@ -126,6 +157,16 @@
             
             <h5 class="h5">Are you sure you want to delete</h5>
             <div id="confirm_buttons"></div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <!-- Modal content form -->
+        <div class="modal-content">
+            <span class="close" id="span_edit">&times;</span>
+            
+            <h5 class="h5">Edit Product</h5>
+            <div id="edit_modal_content"></div>
         </div>
     </div>
 </main>
@@ -162,6 +203,10 @@
         response.style.display = "none";
     }, 5000);
 
+    /*
+        This method contains code for confirming delete of product and eventually deleting or
+        not.
+    */
     function deleteModal(id){
         // Modal for delete confirmation
         var delete_modal = document.getElementById('deleteModal');
@@ -190,6 +235,36 @@
         $("#no").click(function(){
             $("#deleteModal").hide();
         });
+    }
+
+    /*
+    This method displayes and closes the modal for editing the product.
+    It also manipulates the dom, adding the product input fields that already have the values
+    of the product.
+    */
+    function editProduct(id, name, description, thumbnail, price){
+        $('#editModal').show();
+        $('#span_edit').click(function(){
+            $('#editModal').hide();
+        });
+
+        $('#edit_modal_content').html(`
+            <form class="form-group" method="POST" action="" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="${id}" />
+                <input type="hidden" name="path_url" value="${thumbnail}" />
+                <input type="text" name="name" class="form-control" value="${name}" /><br />
+
+                <input type="text" name="price" class="form-control" value="${price}" /><br />
+
+                <textarea name="description" class="form-control">${description}</textarea><br />
+
+                <input type="text" name="category" class="form-control" placeholder="Category" /><br />
+
+                <input type="file" name="thumbnail" class="form-control" placeholder="Thumbnail" /><br />
+
+                <input type="submit" class="btn btn-success" name="edit" value="Submit" />
+            </form>
+        `);
     }
 </script>
 

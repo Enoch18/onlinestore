@@ -1,6 +1,7 @@
 <?php
 class Product extends Database{
     // public column names to for the products table
+    public $id;
     public $name;
     public $description;
     public $active;
@@ -29,6 +30,16 @@ class Product extends Database{
             ':thumbnail' => $this->thumbnail,
             ':price' => $this->price
         ]);
+    }
+
+    /*
+    This method is used to update the name, description,
+    active, thumbnail and price passed from the controller.
+    */
+    public function update(){
+        $sql = "UPDATE products SET name=?, description=?, thumbnail=?, price=? WHERE id=?";
+        $stmt= $this->pdo->prepare($sql);
+        $stmt->execute([$this->name, $this->description, $this->thumbnail, $this->price, $this->id]);
     }
 
     /* This method returns a single product*/
