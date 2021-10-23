@@ -243,10 +243,17 @@
     of the product.
     */
     function editProduct(id, name, description, thumbnail, price){
+        var edit_modal = document.getElementById('editModal');
         $('#editModal').show();
         $('#span_edit').click(function(){
             $('#editModal').hide();
         });
+
+        window.onclick = function(event) {
+            if (event.target == edit_modal) {
+                edit_modal.style.display = "none";
+            }
+        }
 
         $('#edit_modal_content').html(`
             <form class="form-group" method="POST" action="" enctype="multipart/form-data">
