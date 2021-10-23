@@ -8,6 +8,16 @@ route('/', function(){
     return $pages->index();
 });
 
+route('/products', function(){
+    $pages = New PagesController;
+    return $pages->products();
+});
+
+route('/product-details', function(){
+    $pages = New PagesController;
+    return $pages->productDetails();
+});
+
 route('/about-us', function(){
     $pages = New PagesController;
     return $pages->about();
