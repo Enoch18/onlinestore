@@ -1,7 +1,7 @@
 <?php 
     include_once 'views/pages/admin/layouts/top_navbar.php';
     include_once 'views/pages/admin/layouts/sidebar.php';
-    require_once 'Controllers/ProductsController.php';
+    use App\Controllers\ProductsController;
 
     $response = '';
 

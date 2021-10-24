@@ -1,5 +1,13 @@
 <?php
 function view($path){
+    $path = str_replace('.', '/', $path);
+    $path = $path . '.php';
+    require_once $path;
+}
+
+function include_file($path){
+    $path = str_replace('.', '/', $path);
+    $path = $path . '.php';
     require_once $path;
 }
 

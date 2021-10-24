@@ -1,4 +1,7 @@
 <?php
+namespace App\Models;
+use App\Database;
+
 class Product extends Database{
     // public column names to for the products table
     public $id;

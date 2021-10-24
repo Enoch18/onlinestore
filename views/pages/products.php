@@ -1,6 +1,7 @@
 <?php 
-    require_once 'views/layouts/header.php';
-    require_once 'Controllers/ProductsController.php';
+    // include_file is a helper function that is defined in helpers/helpers.php
+    include_file('views.layouts.header');
+    use App\Controllers\ProductsController;
 
     // instantiating the productscontroller class and calling the index method which displays all the products.
     $products = new ProductsController();
@@ -517,4 +518,5 @@ img {
         </section>
     </div>
 </div>
-<?php require_once 'views/layouts/footer.php' ?>
+
+<?php include_file('views.layouts.footer'); ?>

@@ -1,4 +1,6 @@
 <?php 
+namespace App;
+
 class Database{
     public $pdo;
     public $host = 'localhost';
@@ -8,7 +10,7 @@ class Database{
 
     public function __construct() {
         try {
-            $this->pdo = new PDO("mysql:host=$this->host;dbname=$this->dbname", $this->user, $this->pass);
+            $this->pdo = new \PDO("mysql:host=$this->host;dbname=$this->dbname", $this->user, $this->pass);
         } catch (PDOException $e) {
             print $e->getMessage();
             die();
